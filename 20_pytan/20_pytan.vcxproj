@@ -134,6 +134,9 @@
     <None Include="..\baza_danych\dane\ask_20_relacje.sql" />
     <None Include="..\baza_danych\dane\ask_20_words.sql" />
     <None Include="..\baza_danych\skrypty\struktura.sql" />
+    <None Include="..\x64\Debug\libeay32.dll" />
+    <None Include="..\x64\Debug\libmysql.dll" />
+    <None Include="..\x64\Debug\ssleay32.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

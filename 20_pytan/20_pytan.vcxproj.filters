@@ -19,6 +19,9 @@
     <Filter Include="Pliki zasobów\tables">
       <UniqueIdentifier>{3aa63efc-5a87-489c-82ae-8d7ff3019bc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\pliki_dll">
+      <UniqueIdentifier>{69ea6860-6d6e-40db-9a5b-38e8f852b229}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +48,15 @@
     </None>
     <None Include="..\baza_danych\skrypty\struktura.sql">
       <Filter>Pliki zasobów\tables</Filter>
+    </None>
+    <None Include="..\x64\Debug\ssleay32.dll">
+      <Filter>Pliki zasobów\pliki_dll</Filter>
+    </None>
+    <None Include="..\x64\Debug\libmysql.dll">
+      <Filter>Pliki zasobów\pliki_dll</Filter>
+    </None>
+    <None Include="..\x64\Debug\libeay32.dll">
+      <Filter>Pliki zasobów\pliki_dll</Filter>
     </None>
   </ItemGroup>
 </Project>
