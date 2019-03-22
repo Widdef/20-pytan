@@ -129,6 +129,12 @@
   <ItemGroup>
     <ClInclude Include="baza_danych.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\baza_danych\dane\ask_20_question.sql" />
+    <None Include="..\baza_danych\dane\ask_20_relacje.sql" />
+    <None Include="..\baza_danych\dane\ask_20_words.sql" />
+    <None Include="..\baza_danych\skrypty\struktura.sql" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

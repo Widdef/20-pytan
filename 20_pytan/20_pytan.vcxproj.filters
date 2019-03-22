@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Pliki zasobów\data">
+      <UniqueIdentifier>{5efcbb26-f1ec-4c87-97dc-35a21671b23a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\tables">
+      <UniqueIdentifier>{3aa63efc-5a87-489c-82ae-8d7ff3019bc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,5 +32,19 @@
     <ClInclude Include="baza_danych.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\baza_danych\dane\ask_20_words.sql">
+      <Filter>Pliki zasobów\data</Filter>
+    </None>
+    <None Include="..\baza_danych\dane\ask_20_question.sql">
+      <Filter>Pliki zasobów\data</Filter>
+    </None>
+    <None Include="..\baza_danych\dane\ask_20_relacje.sql">
+      <Filter>Pliki zasobów\data</Filter>
+    </None>
+    <None Include="..\baza_danych\skrypty\struktura.sql">
+      <Filter>Pliki zasobów\tables</Filter>
+    </None>
   </ItemGroup>
 </Project>
