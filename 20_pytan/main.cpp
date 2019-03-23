@@ -5,9 +5,8 @@
 #include <string>
 #include "baza_danych.h"
 
-MYSQL_RES *zapytanie(std::string query, baza_danych baza)
+MYSQL_RES *zapytanie(std::string query, baza_danych baza, char* tab[])
 {
-	MYSQL_RES *res;
 	const char* q = query.c_str();
 	int qstate = mysql_query(baza.conn, q);
 	if (!qstate)
@@ -20,35 +19,42 @@ MYSQL_RES *zapytanie(std::string query, baza_danych baza)
 		return false;
 	}
 }
+std::string wynik(MYSQL_RES* res)
+{
+	MYSQL_ROW row;
+	std::string wynik;
+	int i = 0;
+	while (row = mysql_fetch_row(res))
+	{
+		//*wynik++ = row;
+	}
+	return wynik;
+}
 
 int main()
 {
 	baza_danych baza;
 	if (baza.connect())
 	{
-		int qstate;
-		MYSQL_ROW row;
+		MYSQL_ROW *row;
 		MYSQL_RES *res;
+		char* tab;
+		tab = '\0';
 		std::string query = "SELECT `id_question`, COUNT(id_question) AS `wystapienia` FROM relacje GROUP BY id_question ORDER BY `wystapienia` DESC LIMIT 1";
-		res = zapytanie(query, baza);
-		while (row = mysql_fetch_row(res))
+		res = zapytanie(query, baza, &tab);
+		printf("Numer pytania %s\n", wynik(res));
+		//query = std::string("SELECT pytanie FROM question WHERE id = ") + row[0];
+		/*q = query.c_str();
+		qstate = mysql_query(baza.conn, q);1>c:\users\mzygo\source\repos\widdef\20-pytan\20_pytan\main.cpp(45): note: Wskazane typy nie s¹ powi¹zane; konwersja wymaga operatora reinterpret_cast, rzutowania w stylu jêzyka C lub rzutowania w stylu funkcji
+
+		if (!qstate)
 		{
-			printf("Numer pytania %s\n", row[0]);
-			int wystapienia = std::stoi(row[1]);
-			std::cout << wystapienia;
-			query = std::string("SELECT pytanie FROM question WHERE id = ") + row[0];
-			std::cout << std::endl << query;
-			/*q = query.c_str();
-			qstate = mysql_query(baza.conn, q);
-			if (!qstate)
+			res = mysql_store_result(baza.conn);
+			while (row = mysql_fetch_row(res))
 			{
-				res = mysql_store_result(baza.conn);
-				while (row = mysql_fetch_row(res))
-				{
-					printf("\n%s\nTAK/NIE\n", row[0]);
-				}
-			}*/
-		}
+				printf("\n%s\nTAK/NIE\n", row[0]);
+			}
+		}*/
 	}
 	else
 	{
