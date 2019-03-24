@@ -1,5 +1,6 @@
 #pragma once
 #include <mysql.h>
+#include <string>
 class baza_danych
 {
 private:
@@ -10,8 +11,9 @@ private:
 	unsigned int port;
 	const char *unix_socket;
 	unsigned long client_flag;
-public:
 	MYSQL* conn;
+public:
+	MYSQL_RES *zapytanie(std::string query, char* tab[]);
 	baza_danych();
 	bool connect();
 	~baza_danych();

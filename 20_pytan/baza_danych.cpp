@@ -1,5 +1,7 @@
 #include "baza_danych.h"
 #include <mysql.h>
+#include <string>
+#include <iostream>
 
 baza_danych::baza_danych()
 {
@@ -22,6 +24,20 @@ bool baza_danych::connect()
 		return true;
 	}
 	else {
+		return false;
+	}
+}
+MYSQL_RES* baza_danych::zapytanie(std::string query, char* tab[])
+{
+	const char* q = query.c_str();
+	int qstate = mysql_query(conn, q);
+	if (!qstate)
+	{
+		return mysql_store_result(conn);
+	}
+	else
+	{
+		std::cout << "Query failed: " << mysql_error(conn) << std::endl;
 		return false;
 	}
 }
