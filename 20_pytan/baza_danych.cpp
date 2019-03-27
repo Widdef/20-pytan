@@ -41,4 +41,17 @@ MYSQL_RES* baza_danych::zapytanie(std::string query, char* tab[])
 		return false;
 	}
 }
+std::string baza_danych::wynik(MYSQL_RES * res)
+{
+	MYSQL_ROW row;
+	std::string wynik = "aaaa";
+	int i = 0;
+	while (row = mysql_fetch_row(res))
+	{
+		//*wynik++ = row;
+	}
+	return wynik;
+}
+
+
 

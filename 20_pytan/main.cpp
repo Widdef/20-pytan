@@ -6,18 +6,6 @@
 #include "baza_danych.h"
 
 
-std::string wynik(MYSQL_RES* res)
-{
-	MYSQL_ROW row;
-	std::string wynik = "aaaa";
-	int i = 0;
-	while (row = mysql_fetch_row(res))
-	{
-		//*wynik++ = row;
-	}
-	return wynik;
-}
-
 int main()
 {
 	baza_danych baza;
