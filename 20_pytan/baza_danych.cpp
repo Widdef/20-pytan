@@ -44,18 +44,21 @@ MYSQL_RES* baza_danych::zapytanie(std::string query, char* tab[])
 		return false;
 	}
 }
-MYSQL_ROW baza_danych::wynik(MYSQL_RES * res)
+void baza_danych::wynik(MYSQL_RES * res)
 {
 	MYSQL_ROW row;
-	std::string tab[20];
+	char row2 = 'a';
+	//std::string tab[20];
 	int i = 0;
 	while (row = mysql_fetch_row(res))
 	{
+		//row2 = *row[0];
 		//tab[i] = row[i];
-		//i++;
+		printf("\n%s", row[0]);
+		i++;
 		//std::cout << "TEST" << row[0] << std::endl;
 	}
-	return row;
+	//return row2;
 }
 
 

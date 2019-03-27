@@ -18,8 +18,9 @@ int main()
 		char* test[20];
 		std::string query = "SELECT `id_question`, COUNT(id_question) AS `wystapienia` FROM relacje GROUP BY id_question ORDER BY `wystapienia` DESC LIMIT 1";
 		res = baza.zapytanie(query,test);
-		row = baza.wynik(res);
-		std::cout << row;
+		//std::cout << std::endl << res << std::endl;
+		baza.wynik(res);
+		//std::cout << std::endl << row;
 		//res = zapytanie(query, baza, &tab);
 		//printf("Numer pytania %s\n", wynik(res));
 		//query = std::string("SELECT pytanie FROM question WHERE id = ") + row[0];

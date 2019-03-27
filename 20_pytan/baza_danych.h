@@ -14,8 +14,8 @@ private:
 	MYSQL* conn;
 public:
 	MYSQL_RES *zapytanie(std::string query, char* tab[]);
-	//std::string* wynik(MYSQL_RES* res);
-	MYSQL_ROW wynik(MYSQL_RES* res);
+	void wynik(MYSQL_RES* res);
+	//MYSQL_ROW wynik(MYSQL_RES* res);
 	baza_danych();
 	bool connect();
 	~baza_danych();
