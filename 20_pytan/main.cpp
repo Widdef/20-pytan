@@ -11,16 +11,20 @@ int main()
 	baza_danych baza;
 	if (baza.connect())
 	{
-		MYSQL_ROW *row = NULL;
+		MYSQL_ROW row = NULL;
 		MYSQL_RES *res = NULL;
 		char* tab = NULL;
 		tab = '\0';
+		char* test[20];
 		std::string query = "SELECT `id_question`, COUNT(id_question) AS `wystapienia` FROM relacje GROUP BY id_question ORDER BY `wystapienia` DESC LIMIT 1";
+		res = baza.zapytanie(query,test);
+		row = baza.wynik(res);
+		std::cout << row;
 		//res = zapytanie(query, baza, &tab);
 		//printf("Numer pytania %s\n", wynik(res));
 		//query = std::string("SELECT pytanie FROM question WHERE id = ") + row[0];
 		/*q = query.c_str();
-		qstate = mysql_query(baza.conn, q);1>c:\users\mzygo\source\repos\widdef\20-pytan\20_pytan\main.cpp(45): note: Wskazane typy nie s¹ powi¹zane; konwersja wymaga operatora reinterpret_cast, rzutowania w stylu jêzyka C lub rzutowania w stylu funkcji
+		qstate = mysql_query(baza.conn, q);
 
 		if (!qstate)
 		{

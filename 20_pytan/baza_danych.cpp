@@ -20,10 +20,13 @@ bool baza_danych::connect()
 {
 	conn = mysql_init(0);
 	conn = mysql_real_connect(conn, host, login, pass, database, port, unix_socket, client_flag);
+	//std::cout << "test_polaczenia";
 	if (conn) {
+		std::cout << "Polaczenie dziala";
 		return true;
 	}
 	else {
+		std::cout << "Polaczenie nie dziala";
 		return false;
 	}
 }
@@ -41,16 +44,18 @@ MYSQL_RES* baza_danych::zapytanie(std::string query, char* tab[])
 		return false;
 	}
 }
-std::string baza_danych::wynik(MYSQL_RES * res)
+MYSQL_ROW baza_danych::wynik(MYSQL_RES * res)
 {
 	MYSQL_ROW row;
-	std::string wynik = "aaaa";
+	std::string tab[20];
 	int i = 0;
 	while (row = mysql_fetch_row(res))
 	{
-		//*wynik++ = row;
+		//tab[i] = row[i];
+		//i++;
+		//std::cout << "TEST" << row[0] << std::endl;
 	}
-	return wynik;
+	return row;
 }
 
 
