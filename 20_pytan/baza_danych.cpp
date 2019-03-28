@@ -30,35 +30,27 @@ bool baza_danych::connect()
 		return false;
 	}
 }
-MYSQL_RES* baza_danych::zapytanie(std::string query, char* tab[])
+MYSQL_RES* baza_danych::zapytanie(std::string query)
 {
 	const char* q = query.c_str();
 	int qstate = mysql_query(conn, q);
 	if (!qstate)
 	{
-		return mysql_store_result(conn);
+		MYSQL_RES* res = mysql_store_result(conn);
+		MYSQL_ROW row;
+		while (row = mysql_fetch_row(res))
+		{
+			//std::cout << std::endl << row[0] << " " << row[1] << std::endl;
+			*tab[0] = row[0];
+			printf("%s", *tab[0]);
+			
+		}
 	}
 	else
 	{
 		std::cout << "Query failed: " << mysql_error(conn) << std::endl;
 		return false;
 	}
-}
-void baza_danych::wynik(MYSQL_RES * res)
-{
-	MYSQL_ROW row;
-	char row2 = 'a';
-	//std::string tab[20];
-	int i = 0;
-	while (row = mysql_fetch_row(res))
-	{
-		//row2 = *row[0];
-		//tab[i] = row[i];
-		printf("\n%s", row[0]);
-		i++;
-		//std::cout << "TEST" << row[0] << std::endl;
-	}
-	//return row2;
 }
 
 

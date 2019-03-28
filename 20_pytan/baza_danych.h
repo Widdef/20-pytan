@@ -12,10 +12,9 @@ private:
 	const char *unix_socket;
 	unsigned long client_flag;
 	MYSQL* conn;
+	MYSQL_ROW tab[20];
 public:
-	MYSQL_RES *zapytanie(std::string query, char* tab[]);
-	void wynik(MYSQL_RES* res);
-	//MYSQL_ROW wynik(MYSQL_RES* res);
+	MYSQL_RES *zapytanie(std::string query);
 	baza_danych();
 	bool connect();
 	~baza_danych();

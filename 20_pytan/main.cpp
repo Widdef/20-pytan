@@ -12,14 +12,11 @@ int main()
 	if (baza.connect())
 	{
 		MYSQL_ROW row = NULL;
-		MYSQL_RES *res = NULL;
 		char* tab = NULL;
 		tab = '\0';
-		char* test[20];
 		std::string query = "SELECT `id_question`, COUNT(id_question) AS `wystapienia` FROM relacje GROUP BY id_question ORDER BY `wystapienia` DESC LIMIT 1";
-		res = baza.zapytanie(query,test);
-		//std::cout << std::endl << res << std::endl;
-		baza.wynik(res);
+		baza.zapytanie(query);
+		//std::cout << std::endl << res << std::endl; 
 		//std::cout << std::endl << row;
 		//res = zapytanie(query, baza, &tab);
 		//printf("Numer pytania %s\n", wynik(res));
@@ -40,7 +37,7 @@ int main()
 	{
 		puts("Po³¹czenie nie udane");
 	}
-	
+	baza.~baza_danych();
 	std::cin.get();
 	std::cin.get();
 	return 0;
