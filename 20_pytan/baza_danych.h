@@ -13,8 +13,9 @@ private:
 	unsigned long client_flag;
 	MYSQL* conn;
 	MYSQL_ROW tab[20];
+	int how_much;
 public:
-	MYSQL_RES *zapytanie(std::string query);
+	MYSQL_ROW zapytanie(std::string query);
 	baza_danych();
 	bool connect();
 	~baza_danych();

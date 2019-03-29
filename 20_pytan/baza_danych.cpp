@@ -12,6 +12,7 @@ baza_danych::baza_danych()
 	port = 3306;
 	unix_socket = 0;
 	client_flag = 0;
+	how_much = 0;
 }
 baza_danych::~baza_danych()
 {
@@ -20,7 +21,6 @@ bool baza_danych::connect()
 {
 	conn = mysql_init(0);
 	conn = mysql_real_connect(conn, host, login, pass, database, port, unix_socket, client_flag);
-	//std::cout << "test_polaczenia";
 	if (conn) {
 		std::cout << "Polaczenie dziala";
 		return true;
@@ -30,9 +30,15 @@ bool baza_danych::connect()
 		return false;
 	}
 }
-MYSQL_RES* baza_danych::zapytanie(std::string query)
+MYSQL_ROW baza_danych::zapytanie(std::string query)
 {
 	const char* q = query.c_str();
+	int i = 0;
+	while ((tab[i] != NULL) && i < 20)
+	{
+		*q += tab[i];
+		i++;
+	}
 	int qstate = mysql_query(conn, q);
 	if (!qstate)
 	{
@@ -40,10 +46,8 @@ MYSQL_RES* baza_danych::zapytanie(std::string query)
 		MYSQL_ROW row;
 		while (row = mysql_fetch_row(res))
 		{
-			//std::cout << std::endl << row[0] << " " << row[1] << std::endl;
-			*tab[0] = row[0];
-			printf("%s", *tab[0]);
-			
+			tab[how_much++] = row;
+			return row;
 		}
 	}
 	else
@@ -52,6 +56,3 @@ MYSQL_RES* baza_danych::zapytanie(std::string query)
 		return false;
 	}
 }
-
-
-
