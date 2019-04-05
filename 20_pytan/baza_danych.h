@@ -15,7 +15,7 @@ private:
 	MYSQL_ROW tab[20];
 	int how_much;
 public:
-	MYSQL_ROW zapytanie(std::string query);
+	std::string zapytanie(std::string query);
 	baza_danych();
 	bool connect();
 	~baza_danych();

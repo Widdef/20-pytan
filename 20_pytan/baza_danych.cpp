@@ -30,13 +30,13 @@ bool baza_danych::connect()
 		return false;
 	}
 }
-MYSQL_ROW baza_danych::zapytanie(std::string query)
+std::string baza_danych::zapytanie(std::string query)
 {
 	const char* q = query.c_str();
 	int i = 0;
+	std::string test = "";
 	while ((tab[i] != NULL) && i < 20)
 	{
-		*q += tab[i];
 		i++;
 	}
 	int qstate = mysql_query(conn, q);
@@ -46,8 +46,8 @@ MYSQL_ROW baza_danych::zapytanie(std::string query)
 		MYSQL_ROW row;
 		while (row = mysql_fetch_row(res))
 		{
-			tab[how_much++] = row;
-			return row;
+			//test += "" + row[0];
+			return test;
 		}
 	}
 	else
