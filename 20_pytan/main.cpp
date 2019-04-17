@@ -6,18 +6,19 @@
 #include "baza_danych.h"
 
 
+
 int main()
 {
 	baza_danych baza;
+	baza_danych* wsk_baza = &baza;
 	if (baza.connect())
 	{
 		MYSQL_ROW row = NULL;
 		char* tab = NULL;
 		tab = '\0';
-		std::string query = "SELECT `id_question`, COUNT(id_question) AS `wystapienia` FROM relacje GROUP BY id_question ORDER BY `wystapienia` DESC LIMIT 1";
-		baza.zapytanie(query);
-		//std::cout << std::endl << res << std::endl; 
-		//std::cout << std::endl << row;
+		std::string query = "SELECT relacje.id_question, COUNT(relacje.id_question) AS `wystapienia`, liczba.ilosc FROM relacje, (SELECT `id_question`, COUNT(id_question) AS `ilosc` FROM relacje WHERE `stan` = 1 GROUP BY id_question) AS `liczba` WHERE relacje.id_question = liczba.id_question GROUP BY id_question ORDER BY `wystapienia` DESC";
+		std::cout << "TEST: " << baza.choice(query);
+		
 		//res = zapytanie(query, baza, &tab);
 		//printf("Numer pytania %s\n", wynik(res));
 		//query = std::string("SELECT pytanie FROM question WHERE id = ") + row[0];

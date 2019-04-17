@@ -15,9 +15,10 @@ private:
 	MYSQL_ROW tab[20];
 	int how_much;
 public:
-	std::string zapytanie(std::string query);
+	MYSQL_RES* zapytanie(std::string query);
 	baza_danych();
 	bool connect();
 	~baza_danych();
+	float choice(std::string query);
 };
 
