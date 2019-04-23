@@ -19,6 +19,6 @@ public:
 	baza_danych();
 	bool connect();
 	~baza_danych();
-	float choice(std::string query);
+	int choice(std::string query);
 };
 

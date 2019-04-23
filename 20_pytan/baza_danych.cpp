@@ -28,7 +28,7 @@ bool baza_danych::connect()
 	}
 	else {
 		std::cout << "Polaczenie nie dziala";
-		return false;
+		return  false;
 	}
 }
 MYSQL_RES* baza_danych::zapytanie(std::string query)
@@ -46,23 +46,32 @@ MYSQL_RES* baza_danych::zapytanie(std::string query)
 		return false;
 	}
 }
-float baza_danych::choice(std::string query) {
+int baza_danych::choice(std::string query) {
 	MYSQL_ROW row, all;
-	float  stosunek = 0.0, pom = 0.0;
-	int max = 0, ilosc = 0, pom_wys, pom_ilo, all_wyrazy;
+	MYSQL_RES* res = zapytanie(query);
+	float  stosunek = 0.0, t_w = 0.0, f_w = 0.0, t_all = 0.0, f_all = 0.0, pom, pom_wystapienia, pom_ilo_true, all_wyrazy;
+	int wynik;
 	std::string query_all = "SELECT COUNT(id) FROM words";
-	all = mysql_fetch_row(zapytanie(query_all));
+	//-----------KONIEC DEKLARACJI ZMIENNYCH------------
+	all = mysql_fetch_row(zapytanie(query_all)); //Strukture zawierajaca informacje o iloci wszystkich slow pasujacych
 	std::istringstream bss((std::string)all[0]);
 	bss >> all_wyrazy;
-	while (row = mysql_fetch_row(zapytanie(query)))
+	while (row = mysql_fetch_row(res)) // 0 - id 1 - ilosc odpowiedzi 2 - ilosc odpowiedzi tak
 	{
 		std::istringstream iss((std::string)row[1]);
-		iss >> pom_wys;
+		iss >> pom_wystapienia;
 		std::istringstream ass((std::string)row[2]);
-		ass >> pom_ilo;
-		pom = (float)pom_ilo / (float)all_wyrazy;
-		return pom;
+		ass >> pom_ilo_true;
+		t_w = pom_ilo_true / pom_wystapienia; //Stosunek prawdziwych do wystapien
+		f_w = (pom_wystapienia - pom_ilo_true) / pom_wystapienia; //Stosunek fa³szywych do wystapien
+		t_all = pom_ilo_true / all_wyrazy; //Stosunek prawdziwych do wszystkich
+		f_all = (pom_wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek fa³szywych do wszystkich
+		pom = t_w * f_w * t_all * f_all; //Schemat oceny 
+		if (stosunek < pom)
+		{
+			std::istringstream css((std::string)row[0]);
+			css >> wynik;
+		}
 	}
-
-	return stosunek;
+	return wynik;
 }
