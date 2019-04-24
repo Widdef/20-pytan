@@ -19,6 +19,8 @@ public:
 	baza_danych();
 	bool connect();
 	~baza_danych();
-	int choice(std::string query);
+	std::string choice(std::string query);
+	std::string gen_query(int rodzaj);
+	std::string gen_baza_query(int tabela);
 };
 

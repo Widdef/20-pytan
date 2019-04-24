@@ -46,14 +46,14 @@ MYSQL_RES* baza_danych::zapytanie(std::string query)
 		return false;
 	}
 }
-int baza_danych::choice(std::string query) {
+std::string baza_danych::choice(std::string query) {
 	MYSQL_ROW row, all;
 	MYSQL_RES* res;
 	if (res = zapytanie(query))
 	{
 		float  stosunek = 0.0, t_w = 0.0, f_w = 0.0, t_all = 0.0, f_all = 0.0, pom, pom_wystapienia, pom_ilo_true, all_wyrazy;
-		int wynik;
-		std::string query_all = "SELECT COUNT(id) FROM words"; // GERERATOR POTRZEBNY
+		std::string wynik;
+		std::string query_all = gen_query(2);
 		//-----------KONIEC DEKLARACJI ZMIENNYCH------------
 		all = mysql_fetch_row(zapytanie(query_all)); //Strukture zawierajaca informacje o iloci wszystkich slow pasujacych
 		std::istringstream bss((std::string)all[0]);
@@ -69,10 +69,11 @@ int baza_danych::choice(std::string query) {
 			t_all = pom_ilo_true / all_wyrazy; //Stosunek prawdziwych do wszystkich
 			f_all = (pom_wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek fa³szywych do wszystkich
 			pom = t_w * f_w * t_all * f_all; //Schemat oceny 
+			//std::cout <<  std::endl << stosunek << pom << std::endl;
 			if (stosunek < pom)
 			{
-				std::istringstream css((std::string)row[0]);
-				css >> wynik;
+				stosunek = pom;
+				wynik = (std::string)row[0];
 			}
 		}
 		return wynik;
@@ -81,4 +82,42 @@ int baza_danych::choice(std::string query) {
 	{
 		return false;
 	}
+}
+
+std::string baza_danych::gen_query(int rodzaj)
+{
+	std::string query;
+	std::string inside_query = "";
+	switch (rodzaj)
+	{
+	case 1: 
+		inside_query = gen_baza_query(1);
+		query = "SELECT relacje.id_question, COUNT(relacje.id_question) AS `wystapienia`, liczba.ilosc FROM ";
+		query += inside_query; 
+		//std::cout <<std::endl << query << std::endl;
+		query += ",(SELECT `id_question`, COUNT(id_question) AS `ilosc` FROM";
+		query += inside_query; 
+		query += "WHERE `stan` = 1 GROUP BY id_question) AS `liczba` WHERE relacje.id_question = liczba.id_question GROUP BY id_question ORDER BY `wystapienia` DESC";
+		//std::cout << std::endl << query << std::endl; 
+		break;
+	case 2: inside_query = gen_baza_query(2); 
+		query = "SELECT COUNT(id) FROM ";
+		query += inside_query; 
+		break;
+	case 3:
+		query = "";
+		break;
+	}
+	return query;
+}
+
+std::string baza_danych::gen_baza_query(int tabela)
+{
+	std::string wynik = "";
+	switch (tabela)
+	{
+	case 1: wynik = " relacje "; break;
+	case 2: wynik = " words "; break;
+	}
+	return wynik;
 }
