@@ -137,6 +137,7 @@
     <None Include="..\x64\Debug\libeay32.dll" />
     <None Include="..\x64\Debug\libmysql.dll" />
     <None Include="..\x64\Debug\ssleay32.dll" />
+    <None Include="sql_query_examples.sql" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

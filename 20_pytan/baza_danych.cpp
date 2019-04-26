@@ -13,7 +13,7 @@ baza_danych::baza_danych()
 	port = 3306;
 	unix_socket = 0;
 	client_flag = 0;
-	how_much = 0;
+	count_answers = 0;
 }
 baza_danych::~baza_danych()
 {
@@ -91,13 +91,12 @@ std::string baza_danych::gen_query(int rodzaj)
 	switch (rodzaj)
 	{
 	case 1: 
-		inside_query = gen_baza_query(1);
-		query = "SELECT relacje.id_question, COUNT(relacje.id_question) AS `wystapienia`, liczba.ilosc FROM ";
-		query += inside_query; 
+		query = "SELECT relacje.id_question, COUNT(relacje.id_question)AS wystapienia, liczba.ilosc FROM ";
+		query += gen_baza_query(3);
 		//std::cout <<std::endl << query << std::endl;
-		query += ",(SELECT `id_question`, COUNT(id_question) AS `ilosc` FROM";
-		query += inside_query; 
-		query += "WHERE `stan` = 1 GROUP BY id_question) AS `liczba` WHERE relacje.id_question = liczba.id_question GROUP BY id_question ORDER BY `wystapienia` DESC";
+		query += ",(SELECT id_question, COUNT(id_question)AS ilosc FROM";
+		query += gen_baza_query(3);
+		query += "WHERE stan=1 GROUP BY id_question)AS liczba WHERE relacje.id_question=liczba.id_question GROUP BY id_question ORDER BY wystapienia DESC";
 		//std::cout << std::endl << query << std::endl; 
 		break;
 	case 2: inside_query = gen_baza_query(2); 
@@ -116,8 +115,63 @@ std::string baza_danych::gen_baza_query(int tabela)
 	std::string wynik = "";
 	switch (tabela)
 	{
-	case 1: wynik = " relacje "; break;
-	case 2: wynik = " words "; break;
+	case 1:
+		if (count_answers == 0)
+			wynik = " relacje ";
+		else
+		{
+			wynik = " (SELECT * FROM relacje WHERE ";
+			for (int i = 0; i < count_answers; i++)
+			{
+				wynik += "(id_question=" + answers[0][i] + " AND stan=" + answers[1][i] + ")";
+				if (i < count_answers - 1)
+				{
+					wynik += " OR ";
+				}
+			}
+			wynik += ") AS relacje ";
+		}
+		break;
+	case 2:
+		if (count_answers == 0)
+			wynik = " words ";
+		else
+		{
+			wynik = " (SELECT words.id FROM words, relacje WHERE words.id=relacje.id_words AND ";
+			for (int i = 0; i < count_answers; i++)
+			{
+				wynik += "(id_question=" + answers[0][i] + " AND stan=" + answers[1][i] + ")";
+				if (i < count_answers - 1)
+				{
+					wynik += " OR ";
+				}
+			}
+			wynik += ") AS all_elementy";
+		}
+		break;
+	case 3:
+		if (count_answers == 0)
+			wynik = " relacje ";
+		else
+		{
+			MYSQL_ROW row;
+			wynik = " (SELECT * FROM relacje WHERE(";
+			while (row = mysql_fetch_row(zapytanie(gen_baza_query(1))))
+			{
+				wynik += " id_words=" + (std::string)row[1] + " OR";
+			}
+			wynik.pop_back();
+			wynik.pop_back();
+			wynik += ") AND (";
+			for (int i = 0; i < count_answers; i++)
+			{
+				wynik += " id_question!=" + answers[0][i] + " OR";
+			}
+			wynik.pop_back();
+			wynik.pop_back();
+			wynik += ")) AS relacje ";
+			break;
+		}
+		return wynik;
 	}
-	return wynik;
 }

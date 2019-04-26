@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>
 #include "baza_danych.h"
+#include <conio.h>
+	
+void zamiana(std::string*);
 
 int main()
 {
@@ -10,22 +13,21 @@ int main()
 	{
 		MYSQL_ROW row;
 		std::string query;
-		for (int i = 0; i<20; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			query = baza.gen_query(1);
 			//std::cout << "TEST: " << baza.choice(query);
-			query = baza.choice(query);
+			baza.answers[0][i] = query = baza.choice(query);
 			query = "SELECT pytanie FROM question WHERE id = " + query;
 			row = mysql_fetch_row(baza.zapytanie(query));
-			std::cout << std::endl << row[0]; 
-			/* BY NIE ZAPOMNIEÆ ZNOWU I MYŒLEÆ PO RAZ 5 NAD TYM SAMYM JAK IDIOTA NOTKA:
-					
-					SELECT * FROM relacje WHERE id_question = 4 AND stan = 1;
-				I TO CO ZAPISA£EM W ZESZYCIE
-					SELECT * FROM (SELECT * FROM relacje {WHERE [WYNIK ZAPYTANIA POWY¯EJ]) AS wynik} WHERE id_question = 4 AND stan = 1;
-				DLA 1 KROKU NIE MA BYÆ TEGO W {...}
-			*/
-			break;
+			std::cout << std::endl << row[0] << std::endl;
+			do {
+				std::cout << "Tak(y/Y) Nie(n/N)";
+				baza.answers[1][i] = _getch();
+			} while (baza.answers[1][i] != "y" && baza.answers[1][i] != "n" && baza.answers[1][i] != "Y" && baza.answers[1][i] != "N");
+			zamiana(&baza.answers[1][i]);
+			baza.count_answers++;
+			std::cout << std::endl << baza.answers[0][i] << "  " << baza.answers[1][i];
 		}
 	}
 	else
@@ -33,7 +35,16 @@ int main()
 		puts("Po³¹czenie nie udane");
 	}
 	baza.~baza_danych();
+	system("PAUSE");
 	std::cin.get();
 	std::cin.get();
 	return 0;
+}
+
+void zamiana(std::string* znak)
+{
+	if (*znak == "y" || *znak == "Y")
+		*znak = "1";
+	if (*znak == "n" || *znak == "N")
+		*znak = "0";
 }
