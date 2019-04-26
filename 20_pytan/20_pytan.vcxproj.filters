@@ -22,6 +22,9 @@
     <Filter Include="Pliki zasobów\pliki_dll">
       <UniqueIdentifier>{69ea6860-6d6e-40db-9a5b-38e8f852b229}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki zasobów\query">
+      <UniqueIdentifier>{046325d6-7933-4b4e-9d3c-570417fb20cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,6 +60,9 @@
     </None>
     <None Include="..\x64\Debug\libeay32.dll">
       <Filter>Pliki zasobów\pliki_dll</Filter>
+    </None>
+    <None Include="sql_query_examples.sql">
+      <Filter>Pliki zasobów\query</Filter>
     </None>
   </ItemGroup>
 </Project>
