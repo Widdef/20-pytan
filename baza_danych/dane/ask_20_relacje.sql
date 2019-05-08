@@ -27,9 +27,7 @@ CREATE TABLE `relacje` (
   `id_words` int(11) NOT NULL,
   `stan` tinyint(4) DEFAULT NULL,
   KEY `id_question` (`id_question`),
-  KEY `id_words` (`id_words`),
-  CONSTRAINT `relacje_ibfk_1` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`),
-  CONSTRAINT `relacje_ibfk_2` FOREIGN KEY (`id_words`) REFERENCES `words` (`id`)
+  KEY `id_words` (`id_words`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,7 +37,7 @@ CREATE TABLE `relacje` (
 
 LOCK TABLES `relacje` WRITE;
 /*!40000 ALTER TABLE `relacje` DISABLE KEYS */;
-INSERT INTO `relacje` VALUES (1,1,1),(1,2,1),(1,3,0),(1,4,1),(1,5,0),(2,1,1),(2,2,0),(2,3,0),(2,4,1),(2,5,0),(3,1,1),(3,2,1),(3,3,1),(3,4,1),(3,5,0),(4,1,0),(4,2,1),(4,3,0),(4,4,0),(4,5,0);
+INSERT INTO `relacje` VALUES (1,1,1),(1,2,1),(1,3,0),(1,4,1),(1,5,0),(2,1,1),(2,2,0),(2,3,0),(2,4,1),(2,5,0),(3,1,1),(3,2,1),(3,3,1),(3,4,1),(3,5,0),(4,1,0),(4,2,1),(4,3,0),(4,4,0),(4,5,0),(5,9,1),(5,6,1),(5,8,0),(5,3,0),(1,9,1);
 /*!40000 ALTER TABLE `relacje` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-21 23:00:16
+-- Dump completed on 2019-05-08 11:57:51

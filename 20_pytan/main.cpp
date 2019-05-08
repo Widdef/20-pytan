@@ -13,12 +13,16 @@ int main()
 	{
 		MYSQL_ROW row;
 		std::string query;
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			query = baza.gen_query(1);
-			//std::cout << "TEST: " << baza.choice(query);
-			baza.answers[0][i] = query = baza.choice(query);
+			//std::cout << std::endl << query << std::endl;
+			//std::cout << "\nTEST: " << i << std::endl;
+			query = baza.choice(query);
+			//std::cout << std::endl << query << std::endl;
+			baza.answers[0][i] = query;
 			query = "SELECT pytanie FROM question WHERE id = " + query;
+			//std::cout << std::endl << query << std::endl;
 			row = mysql_fetch_row(baza.zapytanie(query));
 			std::cout << std::endl << row[0] << std::endl;
 			do {

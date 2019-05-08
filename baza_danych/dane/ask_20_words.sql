@@ -26,7 +26,7 @@ CREATE TABLE `words` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `slowo` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,7 +35,7 @@ CREATE TABLE `words` (
 
 LOCK TABLES `words` WRITE;
 /*!40000 ALTER TABLE `words` DISABLE KEYS */;
-INSERT INTO `words` VALUES (1,'Pies'),(2,'Złota Rybka'),(3,'Lampa'),(4,'Kot'),(5,'Kamień');
+INSERT INTO `words` VALUES (1,'Pies'),(2,'Złota Rybka'),(3,'Lampa'),(4,'Kot'),(5,'Kamień'),(6,'Drzewo'),(7,'Szafa'),(8,'Trawa'),(9,'Wilk');
 /*!40000 ALTER TABLE `words` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-21 23:00:17
+-- Dump completed on 2019-05-08 11:57:52

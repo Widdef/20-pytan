@@ -56,6 +56,7 @@ std::string baza_danych::choice(std::string query) {
 		std::string query_all = gen_query(2);
 		//-----------KONIEC DEKLARACJI ZMIENNYCH------------
 		all = mysql_fetch_row(zapytanie(query_all)); //Strukture zawierajaca informacje o iloci wszystkich slow pasujacych
+		//std::cout << "\nWYNIK all: " << all[0] << std::endl;
 		std::istringstream bss((std::string)all[0]);
 		bss >> all_wyrazy;
 		while (row = mysql_fetch_row(res)) // 0 - id 1 - ilosc odpowiedzi 2 - ilosc odpowiedzi tak
@@ -70,12 +71,18 @@ std::string baza_danych::choice(std::string query) {
 			f_all = (pom_wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek fa³szywych do wszystkich
 			pom = t_w * f_w * t_all * f_all; //Schemat oceny 
 			//std::cout <<  std::endl << stosunek << pom << std::endl;
-			if (stosunek < pom)
+			//std::cout << "\n\n\n POMOCNICZA" << pom << "\n\n\n\n";
+			if (stosunek <= pom) 
 			{
 				stosunek = pom;
 				wynik = (std::string)row[0];
+				if (pom == 0.0625)
+				{
+					break;
+				}
 			}
 		}
+		//std::cout << "\nWYNIK DECYZJI: " << wynik << std::endl;
 		return wynik;
 	}
 	else
@@ -92,19 +99,16 @@ std::string baza_danych::gen_query(int rodzaj)
 	{
 	case 1: 
 		query = "SELECT relacje.id_question, COUNT(relacje.id_question)AS wystapienia, liczba.ilosc FROM ";
-		query += gen_baza_query(3);
+		query = query + gen_baza_query(3);
 		//std::cout <<std::endl << query << std::endl;
-		query += ",(SELECT id_question, COUNT(id_question)AS ilosc FROM";
-		query += gen_baza_query(3);
-		query += "WHERE stan=1 GROUP BY id_question)AS liczba WHERE relacje.id_question=liczba.id_question GROUP BY id_question ORDER BY wystapienia DESC";
+		query = query + ",(SELECT id_question, COUNT(id_question)AS ilosc FROM";
+		query = query + gen_baza_query(3);
+		query = query + "WHERE stan=1 GROUP BY id_question)AS liczba WHERE relacje.id_question=liczba.id_question GROUP BY id_question ORDER BY wystapienia DESC";
 		//std::cout << std::endl << query << std::endl; 
 		break;
-	case 2: inside_query = gen_baza_query(2); 
+	case 2:
 		query = "SELECT COUNT(id) FROM ";
-		query += inside_query; 
-		break;
-	case 3:
-		query = "";
+		query = query + gen_baza_query(2);
 		break;
 	}
 	return query;
@@ -120,16 +124,16 @@ std::string baza_danych::gen_baza_query(int tabela)
 			wynik = " relacje ";
 		else
 		{
-			wynik = " (SELECT * FROM relacje WHERE ";
+			wynik = "SELECT * FROM relacje WHERE ";
 			for (int i = 0; i < count_answers; i++)
 			{
-				wynik += "(id_question=" + answers[0][i] + " AND stan=" + answers[1][i] + ")";
+				wynik = wynik +"(id_question=" + answers[0][i] + " AND stan =" + answers[1][i] + ")";
+				//wynik = wynik +"(id_question=2 AND stan = 1)";
 				if (i < count_answers - 1)
 				{
 					wynik += " OR ";
 				}
 			}
-			wynik += ") AS relacje ";
 		}
 		break;
 	case 2:
@@ -140,13 +144,13 @@ std::string baza_danych::gen_baza_query(int tabela)
 			wynik = " (SELECT words.id FROM words, relacje WHERE words.id=relacje.id_words AND ";
 			for (int i = 0; i < count_answers; i++)
 			{
-				wynik += "(id_question=" + answers[0][i] + " AND stan=" + answers[1][i] + ")";
+				wynik = wynik + "(id_question=" + answers[0][i] + " AND stan= " + answers[1][i] + ")";
 				if (i < count_answers - 1)
 				{
-					wynik += " OR ";
+					wynik = wynik + " OR ";
 				}
 			}
-			wynik += ") AS all_elementy";
+			wynik = wynik + ") AS all_elementy";
 		}
 		break;
 	case 3:
@@ -156,7 +160,8 @@ std::string baza_danych::gen_baza_query(int tabela)
 		{
 			MYSQL_ROW row;
 			wynik = " (SELECT * FROM relacje WHERE(";
-			while (row = mysql_fetch_row(zapytanie(gen_baza_query(1))))
+			MYSQL_RES* zmien = zapytanie(gen_baza_query(1));
+			while (row = mysql_fetch_row(zmien))
 			{
 				wynik += " id_words=" + (std::string)row[1] + " OR";
 			}
@@ -172,6 +177,7 @@ std::string baza_danych::gen_baza_query(int tabela)
 			wynik += ")) AS relacje ";
 			break;
 		}
-		return wynik;
 	}
+
+	return wynik;
 }

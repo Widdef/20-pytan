@@ -26,7 +26,7 @@ CREATE TABLE `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pytanie` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,7 +35,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (1,'Czy to zwierze?'),(2,'Czy to ma cztery nogi?'),(3,'Czy można znaleźć to w domu?'),(4,'Czy żyje to w wodzie?');
+INSERT INTO `question` VALUES (1,'Czy to zwierze?'),(2,'Czy to ma cztery nogi?'),(3,'Czy można znaleźć to w domu?'),(4,'Czy żyje to w wodzie?'),(5,'Czy znajdziesz to w lesie?');
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-21 23:00:17
+-- Dump completed on 2019-05-08 11:57:51
