@@ -14,6 +14,7 @@ private:
 	MYSQL* conn;
 	std::string gen_baza_query(int tabela);
 public:
+	int all_wyrazy;
 	int count_answers;
 	std::string answers[2][20];
 	baza_danych();

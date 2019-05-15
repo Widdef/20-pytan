@@ -8,6 +8,7 @@ void zamiana(std::string*);
 
 int main()
 {
+	SetConsoleOutputCP(CP_UTF8);
 	baza_danych baza;
 	if (baza.connect())
 	{
@@ -24,14 +25,19 @@ int main()
 			query = "SELECT pytanie FROM question WHERE id = " + query;
 			//std::cout << std::endl << query << std::endl;
 			row = mysql_fetch_row(baza.zapytanie(query));
-			std::cout << std::endl << row[0] << std::endl;
+			std::cout << std::endl << baza.all_wyrazy << std::endl;
+			if (baza.all_wyrazy == 1)
+			{
+				break;
+			}
+			std::cout << std::endl<< row[0] << std::endl; // Wypisanie pytania
 			do {
 				std::cout << "Tak(y/Y) Nie(n/N)";
 				baza.answers[1][i] = _getch();
 			} while (baza.answers[1][i] != "y" && baza.answers[1][i] != "n" && baza.answers[1][i] != "Y" && baza.answers[1][i] != "N");
 			zamiana(&baza.answers[1][i]);
 			baza.count_answers++;
-			std::cout << std::endl << baza.answers[0][i] << "  " << baza.answers[1][i];
+			//std::cout << std::endl << baza.answers[0][i] << "  " << baza.answers[1][i];
 		}
 	}
 	else

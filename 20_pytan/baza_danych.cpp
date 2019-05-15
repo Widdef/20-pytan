@@ -51,7 +51,7 @@ std::string baza_danych::choice(std::string query) {
 	MYSQL_RES* res;
 	if (res = zapytanie(query))
 	{
-		float  stosunek = 0.0, t_w = 0.0, f_w = 0.0, t_all = 0.0, f_all = 0.0, pom, pom_wystapienia, pom_ilo_true, all_wyrazy;
+		float  stosunek = 0.0, t_w = 0.0, f_w = 0.0, t_all = 0.0, f_all = 0.0, pom, pom_ilo_true, wystapienia;
 		std::string wynik;
 		std::string query_all = gen_query(2);
 		//-----------KONIEC DEKLARACJI ZMIENNYCH------------
@@ -62,13 +62,13 @@ std::string baza_danych::choice(std::string query) {
 		while (row = mysql_fetch_row(res)) // 0 - id 1 - ilosc odpowiedzi 2 - ilosc odpowiedzi tak
 		{
 			std::istringstream iss((std::string)row[1]);
-			iss >> pom_wystapienia;
+			iss >> wystapienia;
 			std::istringstream ass((std::string)row[2]);
 			ass >> pom_ilo_true;
-			t_w = pom_ilo_true / pom_wystapienia; //Stosunek prawdziwych do wystapien
-			f_w = (pom_wystapienia - pom_ilo_true) / pom_wystapienia; //Stosunek fa連zywych do wystapien
+			t_w = pom_ilo_true / wystapienia; //Stosunek prawdziwych do wystapien
+			f_w = (wystapienia - pom_ilo_true) / wystapienia; //Stosunek fa連zywych do wystapien
 			t_all = pom_ilo_true / all_wyrazy; //Stosunek prawdziwych do wszystkich
-			f_all = (pom_wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek fa連zywych do wszystkich
+			f_all = (wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek fa連zywych do wszystkich
 			pom = t_w * f_w * t_all * f_all; //Schemat oceny 
 			//std::cout <<  std::endl << stosunek << pom << std::endl;
 			//std::cout << "\n\n\n POMOCNICZA" << pom << "\n\n\n\n";
