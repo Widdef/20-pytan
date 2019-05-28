@@ -55,6 +55,7 @@ std::string baza_danych::choice(std::string query) {
 		std::string wynik;
 		std::string query_all = gen_query(2);
 		//-----------KONIEC DEKLARACJI ZMIENNYCH------------
+		std::cout << std::endl << query_all << std::endl;
 		all = mysql_fetch_row(zapytanie(query_all)); //Strukture zawierajaca informacje o iloci wszystkich slow pasujacych
 		//std::cout << "\nWYNIK all: " << all[0] << std::endl;
 		std::istringstream bss((std::string)all[0]);
@@ -141,16 +142,16 @@ std::string baza_danych::gen_baza_query(int tabela)
 			wynik = " words ";
 		else
 		{
-			wynik = " (SELECT words.id FROM words, relacje WHERE words.id=relacje.id_words AND ";
+			wynik = " (SELECT words.id FROM words, relacje WHERE words.id=relacje.id_words AND (";
 			for (int i = 0; i < count_answers; i++)
 			{
 				wynik = wynik + "(id_question=" + answers[0][i] + " AND stan= " + answers[1][i] + ")";
 				if (i < count_answers - 1)
 				{
-					wynik = wynik + " OR ";
+					wynik = wynik + " AND ";
 				}
 			}
-			wynik = wynik + ") AS all_elementy";
+			wynik = wynik + ") GROUP BY id) AS all_elementy";
 		}
 		break;
 	case 3:
