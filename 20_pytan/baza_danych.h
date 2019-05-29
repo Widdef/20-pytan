@@ -12,7 +12,7 @@ private:
 	const char *unix_socket;
 	unsigned long client_flag;
 	MYSQL* conn;
-	std::string gen_baza_query(int tabela);
+	std::string gen_baza_query(int tabela, int numer = -1);
 public:
 	int all_wyrazy;
 	int count_answers;

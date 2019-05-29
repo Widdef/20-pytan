@@ -14,10 +14,10 @@ int main()
 	{
 		MYSQL_ROW row;
 		std::string query;
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			query = baza.gen_query(1);
-			//std::cout << std::endl << query << std::endl;
+			std::cout << std::endl << query << std::endl;
 			//std::cout << "\nTEST: " << i << std::endl;
 			query = baza.choice(query);
 			//std::cout << std::endl << query << std::endl;
@@ -28,6 +28,7 @@ int main()
 			std::cout << std::endl << baza.all_wyrazy << std::endl;
 			if (baza.all_wyrazy == 1)
 			{
+				std::cout << "Znaleziono nie wyœwietlono !!!";
 				break;
 			}
 			std::cout << std::endl<< row[0] << std::endl; // Wypisanie pytania
@@ -54,7 +55,7 @@ int main()
 void zamiana(std::string* znak)
 {
 	if (*znak == "y" || *znak == "Y")
-		*znak = "1";
+		*znak = "0"; // W zapytaniu negujemy wartoœci dlatgo zamienione odpowiedzi by uniknac dodatkowych funkcji
 	if (*znak == "n" || *znak == "N")
-		*znak = "0";
+		*znak = "1"; // W zapytaniu negujemy wartoœci dlatgo zamienione odpowiedzi by uniknac dodatkowych funkcji
 }
