@@ -17,15 +17,10 @@ int main()
 		for (int i = 0; i < 20; i++)
 		{
 			query = baza.gen_query(1);
-			std::cout << std::endl << query << std::endl;
-			//std::cout << "\nTEST: " << i << std::endl;
 			query = baza.choice(query);
-			//std::cout << std::endl << query << std::endl;
 			baza.answers[0][i] = query;
 			query = "SELECT pytanie FROM question WHERE id = " + query;
-			//std::cout << std::endl << query << std::endl;
 			row = mysql_fetch_row(baza.zapytanie(query));
-			std::cout << std::endl << baza.all_wyrazy << std::endl;
 			if (baza.all_wyrazy == 1)
 			{
 				std::cout << "Znaleziono nie wyœwietlono !!!";
@@ -38,7 +33,6 @@ int main()
 			} while (baza.answers[1][i] != "y" && baza.answers[1][i] != "n" && baza.answers[1][i] != "Y" && baza.answers[1][i] != "N");
 			zamiana(&baza.answers[1][i]);
 			baza.count_answers++;
-			//std::cout << std::endl << baza.answers[0][i] << "  " << baza.answers[1][i];
 		}
 	}
 	else
