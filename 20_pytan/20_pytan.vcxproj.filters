@@ -65,4 +65,9 @@
       <Filter>Pliki zasobów\query</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="pytania.txt">
+      <Filter>Pliki zasobów</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

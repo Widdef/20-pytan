@@ -139,6 +139,9 @@
     <None Include="..\x64\Debug\ssleay32.dll" />
     <None Include="sql_query_examples.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="pytania.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
