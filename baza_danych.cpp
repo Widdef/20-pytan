@@ -8,10 +8,10 @@ baza_danych::baza_danych()
 {
 	host = "localhost";
 	login = "root";
-	pass = "admin";
+	pass = "DonQnei199&MDon!QAZUMK";
 	database = "ask_20";
 	port = 3306;
-	unix_socket = 0;
+	unix_socket = NULL;
 	client_flag = 0;
 	count_answers = 0;
 }
@@ -23,11 +23,11 @@ bool baza_danych::connect()
 	conn = mysql_init(0);
 	conn = mysql_real_connect(conn, host, login, pass, database, port, unix_socket, client_flag);
 	if (conn) {
-		std::cout << "Polaczenie dziala";
+		//std::cout << "\nPolaczenie dziala\n";
 		return true;
 	}
 	else {
-		std::cout << "Polaczenie nie dziala";
+		std::cout << "\nPolaczenie nie dziala\n";
 		return  false;
 	}
 }
@@ -46,7 +46,7 @@ MYSQL_RES* baza_danych::zapytanie(std::string query)
 		return false;
 	}
 }
-std::string baza_danych::choice(std::string query) {
+std::string baza_danych::choice(std::string &query) {
 	MYSQL_ROW row, all;
 	MYSQL_RES* res;
 	if (res = zapytanie(query))
@@ -69,10 +69,15 @@ std::string baza_danych::choice(std::string query) {
 			t_all = pom_ilo_true / all_wyrazy; //Stosunek prawdziwych do wszystkich
 			f_all = (wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek fa³szywych do wszystkich
 			pom = t_w * f_w * t_all * f_all; //Schemat oceny 
-			if (stosunek <= pom) 
+			if (stosunek <= pom)
 			{
 				stosunek = pom;
 				wynik = (std::string)row[0];
+				if (stosunek == 0)
+				{
+					wynik = "stop";
+					break;
+				}
 				if (pom == 0.0625)
 				{
 					break;
@@ -93,7 +98,7 @@ std::string baza_danych::gen_query(int rodzaj)
 	std::string inside_query = "";
 	switch (rodzaj)
 	{
-	case 1: 
+	case 1:
 		query = "SELECT relacje.id_question, COUNT(relacje.id_question)AS wystapienia, liczba.ilosc FROM ";
 		query = query + gen_baza_query(3);
 		query = query + ",(SELECT id_question, COUNT(id_question)AS ilosc FROM";
@@ -118,21 +123,14 @@ std::string baza_danych::gen_baza_query(int tabela, int numer)
 			wynik = " relacje ";
 		else
 		{
-			/*
-				SELECT relacje.id_words
-				FROM relacje, (SELECT id_words
-					FROM relacje
-					WHERE (id_question=3 AND stan !=1)) AS words 
-				WHERE words.id_words = relacje.id_words AND (id_question=5 AND stan !=0)
-			*/
-			wynik = "SELECT relacje.id_words FROM relacje";
-			wynik += gen_baza_query(5, count_answers-2);
-			wynik +=" WHERE ";
-			if (count_answers > 1)
+			wynik = "SELECT words.* FROM relacje";
+			wynik += gen_baza_query(5, count_answers - 2);
+			wynik += " WHERE (words.id = relacje.id_words) AND ";
+			/*if (count_answers > 1)
 			{
-				wynik += "words.id_words = relacje.id_words AND ";
-			}
-			wynik = wynik +"(id_question=" + answers[0][count_answers-1] + " AND stan !=" + answers[1][count_answers - 1] + ") GROUP BY id_words";
+				wynik += "words.id = relacje.id_words AND ";
+			}*/
+			wynik = wynik + "(id_question=" + answers[0][count_answers - 1] + " AND stan !=" + answers[1][count_answers - 1] + ") GROUP BY id_words";
 		}
 		break;
 	case 2:
@@ -140,16 +138,6 @@ std::string baza_danych::gen_baza_query(int tabela, int numer)
 			wynik = " words ";
 		else
 		{
-			// SELECT relacje.id_words FROM (SELECT id_words FROM relacje  WHERE relacje.id_question=4 AND stan != 1) AS wyrazy, relacje WHERE wyrazy.id_words = relacje.id_words AND (id_question=1 AND stan != 0)
-			//for (int i = 0; i < count_answers; i++)
-			//{
-			//	" WHERE words.id=relacje.id_words AND (";
-			//	wynik = wynik + "(id_question =" + answers[0][i] + " AND stan != " + answers[1][i] + ")";
-			//	if (i < count_answers - 1)
-			//	{
-			//		wynik = wynik + " AND ";
-			//	}
-			//}
 			wynik = " (SELECT relacje.id_words AS id FROM relacje," + gen_baza_query(4, count_answers - 1) + " WHERE wyrazy.id_words = relacje.id_words GROUP BY relacje.id_words";
 			wynik = wynik + ") AS all_elementy";
 		}
@@ -161,7 +149,6 @@ std::string baza_danych::gen_baza_query(int tabela, int numer)
 		{
 			MYSQL_ROW row;
 			wynik = " (SELECT * FROM relacje WHERE(";
-			std::cout << std::endl << gen_baza_query(1) << std::endl; // <-----------------------------------------------------
 			MYSQL_RES* zmien = zapytanie(gen_baza_query(1));
 			while (row = mysql_fetch_row(zmien))
 			{
@@ -188,7 +175,7 @@ std::string baza_danych::gen_baza_query(int tabela, int numer)
 			std::string in_if = "";
 			wynik = "(SELECT relacje.id_words FROM relacje,";
 			in_if = gen_baza_query(4, numer - 1);
-			if(in_if == "delete")
+			if (in_if == "delete")
 			{
 				in_if = "";
 				wynik.pop_back();
@@ -201,44 +188,26 @@ std::string baza_danych::gen_baza_query(int tabela, int numer)
 	case 5:
 		if (numer < 0)
 		{
-			wynik = "";
+			wynik = ", words ";
 		}
 		else
 		{
-			/*
-				SELECT relacje.id_words 
-				FROM relacje,(SELECT relacje.id_words 
-					FROM  relacje,(SELECT relacje.id_words 
-						FROM  relacje,(SELECT relacje.id_words 
-							FROM relacje WHERE (id_question = 1 AND stan !=0)) AS words	
-							WHERE (id_question = 1 AND stan !=0)) AS words AS words  <---------------------------------------------------------------------------------
-				WHERE (id_question = 1 AND stan !=0)
-				) AS words WHERE words.id_words = relacje.id_words AND 
-				(id_question=1 AND stan !=0) GROUP BY id_words
-			
-			*/
-
-			/*
-			SELECT relacje.id_words FROM relacje,(SELECT relacje.id_words FROM  relacje,(SELECT relacje.id_words FROM  relacje,(SELECT relacje.id_words FROM relacje WHERE (id_question = 1 AND stan !=0)) AS words WHERE (id_question = 1 AND stan !=0)) AS words WHERE (id_question = 1 AND stan !=0)) AS words WHERE words.id_words = relacje.id_words AND (id_question=1 AND stan !=0) GROUP BY id_words
-			
-			*/
-			if (numer <= count_answers-3)
+			if (numer <= count_answers - 3)
 			{
-				wynik = " relacje";
+				wynik = " relacje ";
 			}
-			wynik += ",(SELECT relacje.id_words FROM ";
+			wynik += ",(SELECT words.* FROM ";
 			if (numer != 0)
 			{
 				wynik += gen_baza_query(5, numer - 1);
-				std::cout <<"\n\n\n "<< numer - 1 << "COUNT ANSWERS"<<count_answers <<" \n\n";
-				if(numer-(count_answers-1) == 0)
+				if (numer - (count_answers - 1) == 0)
 					wynik += " AS words ";
 			}
 			else
-				wynik += "relacje";
-			wynik += " WHERE (id_question = ";
-			wynik += answers[0][count_answers - 1];
-			wynik += " AND stan !=" + answers[1][count_answers-1];
+				wynik += " words, relacje ";
+			wynik += " WHERE (words.id = relacje.id_words) AND (id_question = ";
+			wynik += answers[0][numer];
+			wynik += " AND stan !=" + answers[1][numer];
 			wynik += ")) AS words";
 		}
 		break;
