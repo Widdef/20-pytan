@@ -8,7 +8,7 @@ baza_danych::baza_danych()
 {
 	host = "localhost";
 	login = "root";
-	pass = "DonQnei199&MDon!QAZUMK";
+	pass = "";
 	database = "ask_20";
 	port = 3306;
 	unix_socket = NULL;
@@ -65,9 +65,9 @@ std::string baza_danych::choice(std::string &query) {
 			std::istringstream ass((std::string)row[2]);
 			ass >> pom_ilo_true;
 			t_w = pom_ilo_true / wystapienia; //Stosunek prawdziwych do wystapien
-			f_w = (wystapienia - pom_ilo_true) / wystapienia; //Stosunek fa³szywych do wystapien
+			f_w = (wystapienia - pom_ilo_true) / wystapienia; //Stosunek faÂ³szywych do wystapien
 			t_all = pom_ilo_true / all_wyrazy; //Stosunek prawdziwych do wszystkich
-			f_all = (wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek fa³szywych do wszystkich
+			f_all = (wystapienia - pom_ilo_true) / all_wyrazy;//Stosunek faÂ³szywych do wszystkich
 			pom = t_w * f_w * t_all * f_all; //Schemat oceny 
 			if (stosunek <= pom)
 			{
