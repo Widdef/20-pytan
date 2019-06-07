@@ -14,12 +14,12 @@ void referencja(int &);
 
 int main()
 {
-	SetConsoleOutputCP(CP_UTF8);
+	//SetConsoleOutputCP(CP_UTF8);
 	int zmienna = 5;
 	std::cout << "Referencja!!!!\nPrzed wprowadzeniem do funkcji: " << zmienna << "\nPo wprowadzeniu do funkcji: ";
 	referencja(zmienna);
-	std::cout << zmienna << "\nWciœnij klawisz by przejœæ do 20 pytañ";
-	std::cin.get();
+	std::cout << zmienna << "\nWcisnij klawisz by przejsc do 20 pytan";
+	//std::cin.get();
 	system("cls");
 	std::fstream  pytania;
 	pytania.open("pytania.txt",std::ios::in);
@@ -93,9 +93,11 @@ int main()
 			query += ") AS words WHERE words.id = relacje.id_words";
 			row = mysql_fetch_row(baza.zapytanie(query));
 			std::cout << "\n\nCzy twoje s³owo to:  " << row[0] << "\n\n";
-			std::cout << "Tak(y/Y) Nie(n/N)";
 			std::string ostateczna;
-			ostateczna = _getch();
+			do {
+				std::cout << "Tak(y/Y) Nie(n/N)";
+				ostateczna = _getch();
+			} while (ostateczna != "y" && ostateczna != "n" && ostateczna != "Y" && ostateczna != "N");
 			zamiana(&ostateczna);
 			system("cls");
 			if (ostateczna == "0")
@@ -104,19 +106,19 @@ int main()
 			}
 			else
 			{
-				/*std::cout << "O jakim slowie myslales?\n";
+				std::cout << "O jakim slowie myslales?\n";
 				std::string slowo;
 				std::cin >> slowo;
 				query = "INSERT INTO words (slowo) VALUES (\""+slowo+"\")";
-				mysql_fetch_row(baza.zapytanie(query));
-				query = "SELECT COUNT(id) FROM question";
+				baza.zapytanie(query);
+				query = "SELECT COUNT(id) AS id FROM question";
 				row = mysql_fetch_row(baza.zapytanie(query));
 				std::istringstream iss((std::string)row[0]);
 				iss >> numer;
 				row = mysql_fetch_row(baza.zapytanie("SELECT id FROM words WHERE slowo = \""+slowo+"\""));
-				std::string id_word = row[0];
+				std::string id_word = (std::string)row[0];
 				std::string stan;
-				for (int i = 0; i < numer; i++)
+				for (int i = 1; i <= numer; i++)
 				{
 					stan = "-1";
 					for (int j = 0; j < 20; j++)
@@ -128,14 +130,14 @@ int main()
 						}
 					}
 					query = "INSERT INTO relacje VALUES (\"" + std::to_string(i) + "\",\"" + id_word + "\",\"" + stan + "\")";
-					mysql_fetch_row(baza.zapytanie(query));
-				}*/
+					baza.zapytanie(query);
+				}
 			}
 
 		}
 		else
 		{
-			puts("Po³¹czenie nie udane");
+			puts("Polaczenie nie udane");
 		}
 		free(question_linie);
 		baza.~baza_danych();
@@ -145,7 +147,7 @@ int main()
 	}
 	else
 	{
-		std::cout << "B³¹d odczytywania pytañ";
+		std::cout << "Blad odczytywania pytan";
 	}
 	return 0;
 }

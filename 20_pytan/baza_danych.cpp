@@ -11,7 +11,7 @@ baza_danych::baza_danych()
 	pass = "DonQnei199&MDon!QAZUMK";
 	database = "ask_20";
 	port = 3306;
-	unix_socket = 0;
+	unix_socket = NULL;
 	client_flag = 0;
 	count_answers = 0;
 }
