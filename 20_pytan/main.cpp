@@ -10,10 +10,17 @@
 #define CHAR_IN_LINE  60
 
 void zamiana(std::string*);
+void referencja(int &);
 
 int main()
 {
 	SetConsoleOutputCP(CP_UTF8);
+	int zmienna = 5;
+	std::cout << "Referencja!!!!\nPrzed wprowadzeniem do funkcji: " << zmienna << "\nPo wprowadzeniu do funkcji: ";
+	referencja(zmienna);
+	std::cout << zmienna << "\nWciœnij klawisz by przejœæ do 20 pytañ";
+	std::cin.get();
+	system("cls");
 	std::fstream  pytania;
 	pytania.open("pytania.txt",std::ios::in);
 	if (pytania.good() == true)
@@ -25,7 +32,6 @@ int main()
 		{
 			linie++;
 		}
-		//std::cout << linie * CHAR_IN_LINE* sizeof(char*) << std::endl;
 		question_linie = (char *)malloc(linie * CHAR_IN_LINE * sizeof(char*));
 		pytania.close();
 		pytania.open("pytania.txt", std::ios::in);
@@ -41,14 +47,6 @@ int main()
 			}
 		}
 		pytania.close();
-		//for (int i = 0; i < linie; i++)
-		//{
-		//	for (int j = 0; j < CHAR_IN_LINE; j++)
-		//	{
-		//		std::cout << question_linie[i*CHAR_IN_LINE + j];
-		//	}
-		//	std::cout << std::endl;
-		//}
 		baza_danych baza;
 		if (baza.connect())
 		{
@@ -106,10 +104,32 @@ int main()
 			}
 			else
 			{
-				std::cout << "O jakim slowie myslales?\n";
+				/*std::cout << "O jakim slowie myslales?\n";
 				std::string slowo;
 				std::cin >> slowo;
-				query = "INSERT INTO words ";
+				query = "INSERT INTO words (slowo) VALUES (\""+slowo+"\")";
+				mysql_fetch_row(baza.zapytanie(query));
+				query = "SELECT COUNT(id) FROM question";
+				row = mysql_fetch_row(baza.zapytanie(query));
+				std::istringstream iss((std::string)row[0]);
+				iss >> numer;
+				row = mysql_fetch_row(baza.zapytanie("SELECT id FROM words WHERE slowo = \""+slowo+"\""));
+				std::string id_word = row[0];
+				std::string stan;
+				for (int i = 0; i < numer; i++)
+				{
+					stan = "-1";
+					for (int j = 0; j < 20; j++)
+					{
+						if (baza.answers[0][j] == std::to_string(i))
+						{
+							stan = baza.answers[1][j];
+							break;
+						}
+					}
+					query = "INSERT INTO relacje VALUES (\"" + std::to_string(i) + "\",\"" + id_word + "\",\"" + stan + "\")";
+					mysql_fetch_row(baza.zapytanie(query));
+				}*/
 			}
 
 		}
@@ -136,4 +156,9 @@ void zamiana(std::string* znak)
 		*znak = "0"; // W zapytaniu negujemy wartoœci dlatgo zamienione odpowiedzi by uniknac dodatkowych funkcji
 	if (*znak == "n" || *znak == "N")
 		*znak = "1"; // W zapytaniu negujemy wartoœci dlatgo zamienione odpowiedzi by uniknac dodatkowych funkcji
+}
+
+void referencja(int &zmienna)
+{
+	zmienna*=zmienna;
 }
