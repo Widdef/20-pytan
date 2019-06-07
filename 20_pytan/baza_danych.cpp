@@ -73,6 +73,11 @@ std::string baza_danych::choice(std::string &query) {
 			{
 				stosunek = pom;
 				wynik = (std::string)row[0];
+				if (stosunek == 0)
+				{
+					wynik = "stop";
+					break;
+				}
 				if (pom == 0.0625)
 				{
 					break;
